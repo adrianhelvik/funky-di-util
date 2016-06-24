@@ -280,6 +280,10 @@ function getRawParameters(fn) {
     let isDone = false;
     let stripParen = false;
 
+    if (typeof fn !== 'function') {
+        throw Error('Cannot get raw parameters of non-function. Got: ' + fn);
+    }
+
     delimiterParser(fn.toString(), [
         (balance, string, i, isNext) => {
             if (isDone) { return; }
