@@ -24,6 +24,16 @@ describe('util', () => {
 
             assert.deepEqual(util.getAllMethods(MyClass), ['a', 'b']);
         });
+
+        it('gets methods from the superclass of a class', () => {
+            class A {
+                x() {}
+            }
+
+            class B extends A {}
+
+            assert.deepEqual(util.getAllMethods(B), ['x']);
+        });
     });
 
     describe('.getDefaultParams', () => {

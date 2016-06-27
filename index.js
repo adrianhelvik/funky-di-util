@@ -172,8 +172,7 @@ function delimiterParser(someJavascript, conditions, postCondition) {
 
 }
 
-function getAllMethods(clazz) {
-    const methodNames = [];
+function getAllMethods(clazz, methodNames = []) {
     let raw = [];
 
     delimiterParser(clazz.toString(), [
@@ -187,7 +186,11 @@ function getAllMethods(clazz) {
         }
     ]);
 
-    return methodNames;
+    if (Object.getPrototypeOf(clazz) === Function.prototype) {
+        return methodNames;
+    } else {
+        return getAllMethods(Object.getPrototypeOf(clazz), methodNames);
+    }
 }
 
 function getMethodsWithPrefix(clazz, prefix) {
