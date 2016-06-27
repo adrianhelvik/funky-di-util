@@ -239,9 +239,9 @@ function splitRawParams(raw) {
 
     delimiterParser(raw, [
         (balance, string, i, isNext) => {
-
             // case: strings
             if (string[i] === '\'' || string[i] === '"') {
+                const start = i;
                 delim = string[i];
                 current.push(string[i]);
                 while (true) {
@@ -256,7 +256,7 @@ function splitRawParams(raw) {
                         break;
                     }
                 }
-                return i;
+                return i - start;
             }
 
             // case split

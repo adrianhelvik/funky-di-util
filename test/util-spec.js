@@ -335,4 +335,47 @@ describe('util', () => {
             assert.equal(util.upperCaseFirst('Hello world'), 'Hello world');
         });
     });
+
+    describe('regression tests', () => {
+
+        it('should parse strings correctly', () => {
+
+            class IdeasController {
+
+                inject(mongoose = 'mongoose', response = Response) {
+                    console.log('injecting');
+
+                    this.mongoose = mongoose;
+
+                    this.Idea = this.mongoose.model('Idea');
+                    this.response = response;
+                }
+
+                /**
+                 * Get all stored ideas.
+                 *
+                 * @returns {void}
+                 */
+                index() {
+                    console.log('index');
+
+                    this.Idea.find({}, (err, ideas) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        console.log(ideas);
+                        this.response.success({
+                            ideas
+                        });
+                    });
+                }
+            }
+
+            const raw = util.getRawParameters(IdeasController.prototype.inject);
+            const split = util.splitRawParams(raw);
+
+            assert.deepEqual(split, ["mongoose = 'mongoose'", "response = Response"]);
+
+        });
+    });
 });
